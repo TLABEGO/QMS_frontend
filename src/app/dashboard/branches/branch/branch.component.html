@@ -1,0 +1,74 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h3 class="header smaller lighter blue">{{title.getTitle()}}</h3></div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <form class="form-horizontal" role="form" #itemForm="ngForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <div *ngIf="(name.invalid && (name.dirty || name.touched))"
+             class="alert alert-danger">
+          <ul>
+
+            <li *ngIf="name.invalid && (name.dirty || name.touched)">
+              Name is required.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-2">Name </label>
+        <div class="col-sm-9">
+          <input type="text" id="form-field-2" #name="ngModel" required [(ngModel)]="item.name" name="name" placeholder="Name" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-3">Enabled Online Booking</label>
+        <div class="col-sm-9">
+          <label>
+            <input name="enabled" class="ace ace-switch ace-switch-5" id="form-field-3" [(ngModel)]="item.enabled"  type="checkbox">
+            <span class="lbl"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-4">Enabled Covid Screening</label>
+        <div class="col-sm-9">
+          <label>
+            <input name="enableCovidScreening" class="ace ace-switch ace-switch-5" id="form-field-4" [(ngModel)]="item.enableCovidScreening"  type="checkbox">
+            <span class="lbl"></span>
+          </label>
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-4">Teller Sorting</label>
+        <div class="col-sm-9">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="item.sort = 'Numeric'" class="btn" [ngClass]="item.sort==='Numeric' ? 'btn-primary':'btn-secondary'">Numeric</button>
+            <button type="button" (click)="item.sort = 'Alphabetic'" class="btn" [ngClass]="item.sort==='Alphabetic' ? 'btn-primary':'btn-secondary'">Alphabetic</button>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="clearfix form-actions">
+        <div class="col-md-offset-3 col-md-9">
+          <button class="btn btn-info" type="submit">
+            <i class="ace-icon fa fa-check bigger-110"></i>
+            Submit
+          </button>
+          <button class="btn" type="reset">
+            <i class="ace-icon fa fa-undo bigger-110"></i>
+            Reset
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

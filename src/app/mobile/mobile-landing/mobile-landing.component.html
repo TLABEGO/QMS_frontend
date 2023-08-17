@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="alert alert-block alert-success text-center" style="background-color: #0e457c; color: white">
+    <strong>
+      Customer Care Center Queue Status
+    </strong>
+  </div>
+</div>
+<div class="row">
+  <div class="center">
+    <div class="page-header">
+      <h1 style="color: orange">
+        Number of waiting tickets
+      </h1>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class=" col-lg-12 text-center">
+    <button *ngFor="let branch of branches" routerLink="/mobile-display/{{branch.id}}" [queryParams]="{name: name,contactNumber: contactNumber,email: email,idNumber: idNumber}"
+            class="col btn btn-primary btn-lg btn-space">
+      {{branch.name}} <span style="color: white" class="badge badge-danger">
+      {{getCount(branch)}}
+    </span>
+    </button>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">Queue Management System</span>
+							 &copy; {{dt | date: 'yyyy'}}
+						</span>
+    </div>
+  </div>
+</div>

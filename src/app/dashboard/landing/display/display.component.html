@@ -1,0 +1,160 @@
+<div id="navbar" *ngIf="branch" class="navbar navbar-default ace-save-state" >
+  <div class="navbar-container ace-save-state" id="navbar-container" style="height: 70px; margin-left: 0px;padding-left: 0px !important;">
+    <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+      <span class="sr-only">Toggle sidebar</span>
+
+      <span class="icon-bar"></span>
+
+      <span class="icon-bar"></span>
+
+      <span class="icon-bar"></span>
+    </button>
+
+    <div class="navbar-header center" style="background-color: white; height: 70px;width: 190px; margin: 0px;padding: 0px !important;">
+      <img src="assets/images/coe-logo-sml.png" width="25%">
+    </div>
+
+    <div class="navbar-buttons navbar-header pull-right" role="navigation">
+      <ul class="nav ace-nav">
+
+        <li class="dropdown-modal" >
+          <a href="#" class="dropdown-toggle" style="height: 70px; width: 100px">
+            <span class="user-info">
+									<small>Welcome,</small>
+              {{branch.name}}
+								</span>
+          </a>
+
+
+        </li>
+      </ul>
+    </div>
+  </div><!-- /.navbar-container -->
+</div>
+<div class="col-xs-12">
+  <div class="row">
+    <div class="space-4"></div>
+    <div class="col-sm-6 infobox-container" *ngIf="branch && results && results.length >0 ">
+      <div class="row" *ngIf="branch">
+        <h3 class="header"> {{branch.name}} Branch</h3>
+      </div>
+      <div class="row" *ngFor="let display of results">
+
+       <span class="profile-picture">
+													<video *ngIf="display.attachment" autoplay [muted]="muted"  loop>
+          <source src="{{configService.getApi()}}file/{{display.attachment.id}}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+												</span>
+
+        <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+          <div class="inline position-relative">
+            <a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+              <span class="white">{{display.shortDescription}}</span>
+            </a>
+
+          </div>
+        </div>
+
+        <div class="row alert alert-success" *ngIf="display.longDescription">
+          <strong>{{display.longDescription}}</strong>
+        </div>
+
+        <div class="row alert alert-success" *ngIf="display.zuluLongDescription">
+          <strong>{{display.zuluLongDescription}}</strong>
+        </div>
+      </div>
+    </div>
+    <div [ngClass]="branch && results && results.length >0?  'col-sm-6':'col-sm-12'" >
+      <div class="row text-center" *ngIf="branch">
+        <h1 class="header"> Servicing</h1>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <table id="simple-table" class="table well" border="0" style="border: 0; width: 100%; table-layout:fixed;text-align: center;">
+            <thead>
+            <tr>
+              <th style="background-color: white"></th >
+              <th style="background-color: #00250f; color: white;text-align: center;border-right: 1px solid white;" *ngFor="let teller of tellers">
+                  <h3>{{teller.name}}</h3>
+              </th>
+            </tr>
+            </thead>
+          <tbody *ngIf="loadingDone">
+            <tr>
+              <td  style="background-color: #0e457c; color: white">
+                  <h4>Servicing</h4>
+              </td>
+              <td class="center" style="text-align: center;" *ngFor="let teller of tellers">
+                  <h3 *ngIf="servicing.get(teller.id)" style="color: red"> {{servicing.get(teller.id).reference}}</h3>
+              </td>
+            </tr>
+          </tbody>
+          </table>
+          <table  class="table well" border="0" style="border: 0; width: 100%; table-layout:fixed;text-align: center;">
+            <tr *ngIf="loadingDone === true && totalWaiting">
+              <td style="background-color: #0e457c; color: white"></td>
+              <td style="background-color: #0e457c; color: white" [colSpan]="totalWaiting.size" class="center">
+                <h3>
+                  Services
+                </h3>
+              </td>
+            </tr>
+            <tr *ngIf="loadingDone === true && totalWaiting">
+              <td style="background-color: #0e457c; color: white">
+              </td>
+              <td class="center" *ngFor="let key of totalWaiting.keys()">
+                <h3> {{key}}</h3>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="5"></td>
+            </tr>
+
+            <tr *ngIf="top10PerService">
+              <td style="background-color: #0e457c; color: white;text-align: center;" >
+                <h3>Next</h3>
+              </td>
+              <td class="center" *ngFor="let ticket of top10PerService.keys()">
+
+               <span *ngFor="let ticket of top10PerService.get(ticket); let i = index">
+                        <h3  *ngIf="i===0" style="background-color: green; color: white;padding: 5px;margin: 5px"> {{ticket.reference}}</h3>
+                      <h3  *ngIf="i!==0" style="background-color: blue; color: white;padding: 5px;margin: 5px"> {{ticket.reference}}</h3>
+                    </span>
+
+              </td>
+            </tr>
+            <tr *ngIf="tellers">
+              <td style="background-color: #0e457c; color: white" class="center"  [colSpan]="totalWaiting.size+1">
+                <h3>Total Waiting</h3>
+              </td>
+
+            </tr>
+
+            <tr style="margin: 0px !important;padding: 0px !important" *ngIf="loadingDone">
+              <td>
+              </td>
+              <td class="center" *ngFor="let key of totalWaiting.values()" style="margin: 0px !important;padding: 0px !important">
+                   <h3  style="background-color: #ff6d04; color: white;padding: 5px"> {{key}}
+
+                   </h3>
+              </td>
+            </tr>
+          </table>
+        </div><!-- /.span -->
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder"></span>
+							 {{deviceId}}
+						</span>
+
+    </div>
+  </div>
+</div>

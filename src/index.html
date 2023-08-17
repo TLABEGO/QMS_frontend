@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta charset="utf-8" />
+  <meta name="description" content="overview &amp; stats" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>QMS</title>
+  <base href="/">
+  <!-- bootstrap & fontawesome -->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="assets/font-awesome/4.5.0/css/font-awesome.min.css"/>
+  <link rel="apple-touch-icon-precomposed" href="assets/images/favicon.png">
+  <link rel="shortcut icon" href="assets/images/favicon.png">
+  <!-- page specific plugin styles -->
+
+  <!-- text fonts -->
+  <link rel="stylesheet" href="assets/css/fonts.googleapis.com.css"/>
+  <link rel="stylesheet" href="assets/css/select2.min.css"/>
+  <link rel="stylesheet" href="assets/css/toaster.css"/>
+  <link rel="stylesheet" href="assets/css/dropzone.min.css"/>
+  <link rel="stylesheet" href="assets/css/jquery.timepicker.min.css"/>
+
+  <!-- ace styles -->
+  <link rel="stylesheet" href="assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style"/>
+
+  <!--[if lte IE 9]>
+  <link rel="stylesheet" href="assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
+  <![endif]-->
+  <link rel="stylesheet" href="assets/css/ace-skins.min.css"/>
+  <link rel="stylesheet" href="assets/css/ace-rtl.min.css"/>
+
+  <!--[if lte IE 9]>
+  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
+  <![endif]-->
+  <!-- inline styles related to this page -->
+  <!-- ace settings handler -->
+  <script src="assets/js/ace-extra.min.js"></script>
+  <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+  <!--[if lte IE 8]>
+  <script src="assets/js/html5shiv.min.js"></script>
+  <script src="assets/js/respond.min.js"></script>
+  <![endif]-->
+  <link href="assets/date-picker/jquery-ui.css" rel="Stylesheet" type="text/css" />
+  <link rel="stylesheet" href="assets/date-picker/jquery-ui-timepicker-addon.min.css" integrity="sha512-LT9fy1J8pE4Cy6ijbg96UkExgOjCqcxAC7xsnv+mLJxSvftGVmmc236jlPTZXPcBRQcVOWoK1IJhb1dAjtb4lQ==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="assets/css/fullcalendar.min.css" type="text/css" />
+  <link rel="stylesheet" href="assets/css/bootstrap-clockpicker.min.css" type="text/css" />
+  <style>
+
+    .fileinput-button, .fileinput-dropzone {
+      position: relative;
+      overflow: hidden;
+      display: inline-block
+    }
+
+    .fileinput-button input, .fileinput-dropzone input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      direction: ltr;
+      cursor: pointer;
+      z-index: 2
+    }
+
+    .btn-space {
+      margin: 10px;
+    }
+
+    .fileinput-button:focus .fileinput-button-label, .fileinput-button:hover .fileinput-button-label, .fileinput-dropzone:focus .fileinput-button-label, .fileinput-dropzone:hover .fileinput-button-label {
+      opacity: 1
+    }
+
+    .fileinput-dropzone {
+      display: block;
+      padding: 2.5rem;
+      text-align: center;
+      color: #686f76;
+      border-radius: .25rem;
+      border: 2px dashed rgba(61, 70, 79, .125);
+      -webkit-transition: all .2s;
+      transition: all .2s
+    }
+
+    .fileinput-dropzone.hover {
+      color: #28313b;
+      border-color: #346cb0
+    }
+
+    .fileinput-button-label {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      padding: 1rem;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(52, 108, 176, .86);
+      color: #fff;
+      font-size: .875rem;
+      text-align: center;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 1;
+      -webkit-transition: opacity .2s;
+      transition: opacity .2s
+    }
+
+    .list-group {
+      border: 0;
+      -webkit-box-shadow: 0 0 0 1px rgba(61, 70, 79, .05), 0 1px 3px 0 rgba(61, 70, 79, .15);
+      box-shadow: 0 0 0 1px rgba(61, 70, 79, .05), 0 1px 3px 0 rgba(61, 70, 79, .15)
+    }
+
+    .list-group-flush, .list-group-reflow {
+      -webkit-box-shadow: none;
+      box-shadow: none
+    }
+
+    .list-group-reflow .list-group-header, .list-group-reflow .list-group-item {
+      background-color: transparent
+    }
+
+    .list-group-fluid .list-group-item {
+      padding-right: 0;
+      padding-left: 0
+    }
+
+    .list-group-header {
+      margin: 0;
+      padding: .75rem 1rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      font-size: .75rem;
+      font-weight: 600;
+      color: #686f76;
+      background-color: #fff
+    }
+
+    .list-group-header:not(:first-child) {
+      margin-top: 1px;
+      border-top: 1px solid rgba(19, 29, 40, .125)
+    }
+
+    .list-group-header + .list-group-item .list-group-item-body, .list-group-header + .list-group-item .list-group-item-figure {
+      border-top-color: transparent !important
+    }
+
+    .list-group-item {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+      align-items: stretch;
+      border-width: 1px 0;
+      border-color: transparent
+    }
+
+    .list-group-item:first-child {
+      border-width: 0 0 1px
+    }
+
+    .list-group-item:last-child {
+      border-width: 1px 0 0
+    }
+
+    .list-group-item.active {
+      color: #28313b;
+      border-color: transparent;
+      border-radius: 0 !important;
+      -webkit-box-shadow: inset 4px 0 0 0 #346cb0;
+      box-shadow: inset 4px 0 0 0 #346cb0
+    }
+
+    .list-group-item.active .list-group-item-figure {
+      color: #346cb0
+    }
+
+    .list-group-item.active .list-group-item-text {
+      color: #28313b
+    }
+
+    .list-group-item.active:focus .list-group-item-figure, .list-group-item.active:hover .list-group-item-figure {
+      color: #346cb0
+    }
+
+    .list-group-item-action:focus .list-group-item-figure, .list-group-item-action:hover .list-group-item-figure {
+      color: #686f76
+    }
+
+    .list-group-item-action:focus .list-group-item-text, .list-group-item-action:hover .list-group-item-text {
+      color: #28313b
+    }
+
+    .list-group-item-figure {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      color: #a9acb0
+    }
+
+    .list-group-item-figure:first-child {
+      padding-right: 1rem
+    }
+
+    .list-group-item-figure:last-child {
+      padding-left: 1rem
+    }
+
+    .list-group-item-body {
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      min-width: 0;
+      -ms-flex-item-align: center;
+      align-self: center;
+      font-size: .875rem
+    }
+
+    .list-group-item-title {
+      font-size: 1rem
+    }
+
+    .list-group-item-subtitle, .list-group-item-title {
+      margin: 0;
+      line-height: 1.25rem;
+      font-weight: 400;
+      color: #28313b
+    }
+
+    .list-group-item-subtitle {
+      font-size: inherit
+    }
+
+    .list-group-item-subtitle > a, .list-group-item-title > a, a.list-group-item-subtitle, a.list-group-item-title {
+      color: #3d464f
+    }
+
+    .list-group-item-subtitle > a:focus, .list-group-item-subtitle > a:hover, .list-group-item-title > a:focus, .list-group-item-title > a:hover, a.list-group-item-subtitle:focus, a.list-group-item-subtitle:hover, a.list-group-item-title:focus, a.list-group-item-title:hover {
+      color: #28313b;
+      text-decoration: none
+    }
+
+    .list-group-item-text {
+      margin-bottom: 0;
+      line-height: 1.25rem;
+      color: #686f76
+    }
+
+    .list-group-item.custom-control .custom-control-label {
+      width: 100%
+    }
+
+    .list-group-item.custom-control .custom-control-label:after, .list-group-item.custom-control .custom-control-label:before {
+      right: .125rem;
+      left: auto
+    }
+
+    .list-group-item.custom-select {
+      height: auto;
+      border-radius: 0
+    }
+
+    .list-group-item.custom-select, .list-group-item.custom-select:focus {
+      -webkit-box-shadow: none;
+      box-shadow: none
+    }
+
+    .list-group-item-danger, .list-group-item-dark, .list-group-item-info, .list-group-item-light, .list-group-item-primary, .list-group-item-secondary, .list-group-item-success, .list-group-item-warning {
+      color: #28313b;
+      background-color: #fff;
+      border-color: rgba(19, 29, 40, .125);
+      border-radius: 0 !important
+    }
+
+    .list-group-item-danger.list-group-item-action, .list-group-item-dark.list-group-item-action, .list-group-item-info.list-group-item-action, .list-group-item-light.list-group-item-action, .list-group-item-primary.list-group-item-action, .list-group-item-secondary.list-group-item-action, .list-group-item-success.list-group-item-action, .list-group-item-warning.list-group-item-action {
+      color: #28313b
+    }
+
+    .list-group-item-danger.list-group-item-action:focus, .list-group-item-danger.list-group-item-action:hover, .list-group-item-dark.list-group-item-action:focus, .list-group-item-dark.list-group-item-action:hover, .list-group-item-info.list-group-item-action:focus, .list-group-item-info.list-group-item-action:hover, .list-group-item-light.list-group-item-action:focus, .list-group-item-light.list-group-item-action:hover, .list-group-item-primary.list-group-item-action:focus, .list-group-item-primary.list-group-item-action:hover, .list-group-item-secondary.list-group-item-action:focus, .list-group-item-secondary.list-group-item-action:hover, .list-group-item-success.list-group-item-action:focus, .list-group-item-success.list-group-item-action:hover, .list-group-item-warning.list-group-item-action:focus, .list-group-item-warning.list-group-item-action:hover {
+      color: #28313b;
+      background-color: #f5f5f5
+    }
+
+    .list-group-item-danger.list-group-item-action.active, .list-group-item-dark.list-group-item-action.active, .list-group-item-info.list-group-item-action.active, .list-group-item-light.list-group-item-action.active, .list-group-item-primary.list-group-item-action.active, .list-group-item-secondary.list-group-item-action.active, .list-group-item-success.list-group-item-action.active, .list-group-item-warning.list-group-item-action.active {
+      border-color: rgba(19, 29, 40, .125);
+      border-radius: 0 !important;
+      -webkit-box-shadow: inset 4px 0 0 0 #346cb0;
+      box-shadow: inset 4px 0 0 0 #346cb0
+    }
+
+    .list-group-item-primary {
+      -webkit-box-shadow: inset 4px 0 0 0 #346cb0;
+      box-shadow: inset 4px 0 0 0 #346cb0
+    }
+
+    .list-group-item-secondary {
+      -webkit-box-shadow: inset 4px 0 0 0 #f5f5f5;
+      box-shadow: inset 4px 0 0 0 #f5f5f5
+    }
+
+    .list-group-item-success {
+      -webkit-box-shadow: inset 4px 0 0 0 #00a28a;
+      box-shadow: inset 4px 0 0 0 #00a28a
+    }
+
+    .list-group-item-info {
+      -webkit-box-shadow: inset 4px 0 0 0 #0179a8;
+      box-shadow: inset 4px 0 0 0 #0179a8
+    }
+
+    .list-group-item-warning {
+      -webkit-box-shadow: inset 4px 0 0 0 #f7c46c;
+      box-shadow: inset 4px 0 0 0 #f7c46c
+    }
+
+    .list-group-item-danger {
+      -webkit-box-shadow: inset 4px 0 0 0 #b76ba3;
+      box-shadow: inset 4px 0 0 0 #b76ba3
+    }
+
+    .list-group-item-light {
+      -webkit-box-shadow: inset 4px 0 0 0 #f5f5f5;
+      box-shadow: inset 4px 0 0 0 #f5f5f5
+    }
+
+    .list-group-item-dark {
+      -webkit-box-shadow: inset 4px 0 0 0 #3d464f;
+      box-shadow: inset 4px 0 0 0 #3d464f
+    }
+
+    .list-group-bordered .list-group-header {
+      border-top: 0
+    }
+
+    .list-group-bordered .list-group-item {
+      border-color: rgba(19, 29, 40, .125)
+    }
+
+    .list-group-divider .list-group-item {
+      margin-top: 0;
+      padding: 0;
+      border-bottom: 0
+    }
+
+    .list-group-divider .list-group-item.active {
+      border-color: transparent
+    }
+
+    .list-group-divider .list-group-item:not(:first-child) > .list-group-item-body, .list-group-divider .list-group-item:not(:first-child) > .list-group-item-figure:last-child {
+      border-top: 1px solid rgba(19, 29, 40, .125)
+    }
+
+    .list-group-divider .list-group-item-figure {
+      padding: .75rem 1rem
+    }
+
+    .list-group-divider .list-group-item-body {
+      padding: .75rem 0
+    }
+
+    .list-group-divider .list-group-item-body:first-child {
+      padding-left: 1rem
+    }
+
+    .list-group-divider .list-group-item-body:last-child {
+      padding-right: 1rem
+    }
+
+    .list-group-media {
+      background-color: transparent;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border-radius: 0
+    }
+
+    .list-group-media .list-group-item {
+      margin-bottom: 0;
+      padding: 0;
+      border: 0;
+      background-color: #fff;
+      border-radius: .25rem;
+      -webkit-box-shadow: 0 0 0 1px rgba(61, 70, 79, .05), 0 1px 3px 0 rgba(61, 70, 79, .15);
+      box-shadow: 0 0 0 1px rgba(61, 70, 79, .05), 0 1px 3px 0 rgba(61, 70, 79, .15)
+    }
+
+    .list-group-media .list-group-item:not(:first-child) {
+      margin-top: 1rem
+    }
+
+    .list-group-media .list-group-item-action:focus, .list-group-media .list-group-item-action:hover {
+      background-color: #fff
+    }
+
+    .list-group-media .list-group-item-figure {
+      position: relative;
+      padding: 0;
+      width: 12rem;
+      max-width: 40%;
+      overflow: hidden
+    }
+
+    .list-group-media .list-group-item-figure > img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate3d(-50%, -50%, 0);
+      transform: translate3d(-50%, -50%, 0);
+      max-width: 200%
+    }
+
+    .list-group-media .list-group-item-body {
+      padding: 1.5rem 1rem
+    }
+
+    .list-group-media .list-group-item-title {
+      margin-bottom: .5rem;
+      font-weight: 700
+    }
+    .ui-timepicker-container{
+      z-index: 100000 !important;
+    }
+
+
+
+  </style>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1976d2">
+</head>
+<body class="no-skin">
+  <app-root></app-root>
+  <!--[if !IE]> -->
+  <script src="assets/js/jquery-2.1.4.min.js"></script>
+  <!-- <![endif]-->
+  <!--[if IE]>
+  <script src="assets/js/jquery-1.11.3.min.js"></script>
+  <![endif]-->
+  <script type="text/javascript">
+    if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+  </script>
+  <script src="assets/date-picker/jquery.min.js"></script>
+  <script src="assets/date-picker/jquery-ui.min.js"></script>
+  <script src="assets/date-picker/jquery-ui-timepicker-addon.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/ace-elements.min.js"></script>
+  <script src="assets/js/ace.min.js"></script>
+  <script src="assets/js/bootbox.js"></script>
+  <script src="assets/js/moment.min.js"></script>
+  <script src="assets/js/fullcalendar.min.js"></script>
+  <script src="assets/js/select2.min.js"></script>
+  <script src="assets/js/bootstrap-clockpicker.min.js"></script>
+  <script src="assets/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+  <script src="assets/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+  <script src="assets/blueimp-file-upload/js/jquery.fileupload.js"></script>
+  <script src="assets/blueimp-file-upload/js/jquery.fileupload-process.js"></script>
+  <script src="assets/blueimp-file-upload/js/jquery.fileupload-image.js"></script>
+  <script src="assets/blueimp-file-upload/js/jquery.fileupload-audio.js"></script>
+  <script src="assets/blueimp-file-upload/js/jquery.fileupload-video.js"></script>
+  <script src="assets/blueimp-file-upload/js/jquery.fileupload-validate.js"></script>
+  <script src="assets/js/jquery.timepicker.min.js"></script>
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+</body>
+</html>

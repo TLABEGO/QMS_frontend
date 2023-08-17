@@ -1,0 +1,286 @@
+<div id="navbar" class="navbar navbar-default ace-save-state navbar-fixed-top" >
+  <div class="navbar-container ace-save-state" id="navbar-container" style="height: 70px; margin-left: 0px;padding-left: 0px !important;">
+    <button type="button" class="navbar-toggle menu-toggler  pull-left fixed" id="menu-toggler" data-target="#sidebar">
+      <span class="sr-only">Toggle sidebar</span>
+
+      <span class="icon-bar"></span>
+
+      <span class="icon-bar"></span>
+
+      <span class="icon-bar"></span>
+    </button>
+
+    <div class="navbar-header center" style="background-color: white; height: 70px;width: 190px; margin: 0px;padding: 0px !important;">
+      <img src="assets/images/coe-logo.png" width="25%">
+    </div>
+
+    <div class="navbar-buttons navbar-header pull-right" role="navigation">
+      <ul class="nav ace-nav">
+        <li class="dropdown-modal" >
+          <a data-toggle="dropdown" href="#" class="dropdown-toggle" style="height: 70px; width: 100px">
+            <span class="user-info">
+									<small>Welcome,</small>
+									{{user?user.firstName:''}}
+								</span>
+
+            <i class="ace-icon fa fa-caret-down"></i>
+          </a>
+
+          <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+
+
+            <li *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+              <a routerLink="profile">
+                <i class="ace-icon fa fa-user"></i>
+                Profile
+              </a>
+            </li>
+
+            <li class="divider"  *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')"></li>
+
+            <li>
+              <a routerLink="/">
+                <i class="ace-icon fa fa-power-off"></i>
+                Logout
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div><!-- /.navbar-container -->
+</div>
+
+<div class="main-container ace-save-state" id="main-container">
+  <script type="text/javascript">
+    try {
+      ace.settings.loadState('main-container')
+    } catch (e) {
+    }
+  </script>
+
+  <div id="sidebar" class="sidebar responsive  ace-save-state" *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+    <script type="text/javascript">
+      try {
+        ace.settings.loadState('sidebar')
+      } catch (e) {
+      }
+    </script>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts"  *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+      <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+        <button class="btn btn-primary" routerLink="report">
+          <i class="ace-icon fa fa-line-chart"></i>
+        </button>
+
+        <button class="btn btn-info" routerLink="tellers">
+          <i class="ace-icon fa fa-pencil"></i>
+        </button>
+
+        <button class="btn btn-warning"  routerLink="users">
+          <i class="ace-icon fa fa-users"></i>
+        </button>
+
+        <button class="btn btn-danger "   routerLink="closing-reasons">
+          <i class="ace-icon fa fa-cogs"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+        <span class="btn btn-success"></span>
+
+        <span class="btn btn-info"></span>
+
+        <span class="btn btn-warning"></span>
+
+        <span class="btn btn-danger"></span>
+      </div>
+    </div><!-- /.sidebar-shortcuts -->
+
+    <ul class="nav nav-list">
+      <li class="" *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+        <a routerLink="/dashboard" (click)="closeMenu()">
+          <i class="menu-icon fa fa-tachometer"></i>
+          <span class="menu-text"> Dashboard </span>
+        </a>
+
+        <b class="arrow"></b>
+      </li>
+
+
+      <li  routerLinkActive="active"   *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+        <a routerLink="users" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-users"></i>
+          <span class="menu-text"> Users </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+        <a routerLink="services" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-list"></i>
+          <span class="menu-text"> Services </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN')">
+        <a routerLink="online-services" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-globe"></i>
+          <span class="menu-text">Online Services</span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+        <a routerLink="tellers" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-pencil"></i>
+          <span class="menu-text"> Tellers </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+        <a routerLink="display-information" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-tv"></i>
+          <span class="menu-text"> LCD Displays </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+        <a routerLink="tickets" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-arrows"></i>
+          <span class="menu-text"> Track Tickets </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+      <li  routerLinkActive="active">
+        <a routerLink="report" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-line-chart"></i>
+          <span class="menu-text"> Report</span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+        <a routerLink="active-tickets" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-sitemap"></i>
+          <span class="menu-text">Active Queue</span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+        <a routerLink="abandoned-tickets" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-trash-o"></i>
+          <span class="menu-text"> Abandoned Tickets</span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+
+
+
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+        <a routerLink="closing-reasons" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-cogs"></i>
+          <span class="menu-text">Reasons</span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN')">
+        <a routerLink="branches" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-building"></i>
+          <span class="menu-text">Customer Care Center</span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN')">
+        <a routerLink="connectivity" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-wifi"></i>
+          <span class="menu-text">Connectivity</span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN')">
+        <a routerLink="intra-tvs" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-tv"></i>
+          <span class="menu-text">Intra TVS</span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN')">
+        <a routerLink="messages" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <i class="menu-icon fa fa-envelope"></i>
+          <span class="menu-text">Messages</span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+      <li  routerLinkActive="active" *ngIf="usersService.hasPermission('PERM_ADMIN') || usersService.hasPermission('PERM_BRANCHADMIN')">
+        <a routerLink="entries" (click)="closeMenu()" style="background-color: #002508; color: white">
+          <img src="assets/images/covid.png" width="20%">
+          <span class="menu-text"> Covid Tracking </span>
+        </a>
+        <b class="arrow"></b>
+      </li>
+
+
+    </ul>
+
+
+  </div>
+
+  <div class="main-content">
+    <div class="main-content-inner">
+      <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+          <li>
+            <a routerLink="/dashboard">Dashboard</a>
+          </li>
+          <li class="active">{{title.getTitle()}}</li>
+        </ul><!-- /.breadcrumb -->
+
+        <div class="nav-search" id="nav-search">
+  <!--          <form class="form-search">-->
+  <!--								<span class="input-icon">-->
+  <!--									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input"-->
+  <!--                         autocomplete="off"/>-->
+  <!--									<i class="ace-icon fa fa-search nav-search-icon"></i>-->
+  <!--								</span>-->
+  <!--          </form>-->
+        </div><!-- /.nav-search -->
+      </div>
+
+      <div class="page-content">
+        <div class="row">
+          <div class="col-xs-12">
+            <router-outlet></router-outlet>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.page-content -->
+    </div>
+  </div><!-- /.main-content -->
+  <div class="footer">
+    <div class="footer-inner">
+      <div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">Queue Management System</span>
+							 &copy; {{date | date: 'yyyy'}}
+						</span>
+      </div>
+    </div>
+  </div>
+
+  <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+  </a>
+</div><!-- /.main-container -->

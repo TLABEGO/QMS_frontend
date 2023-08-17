@@ -1,0 +1,80 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h3 class="header smaller lighter blue">{{title.getTitle()}}</h3></div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <form class="form-horizontal" role="form" #itemForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group" *ngIf="usersService.hasPermission('PERM_ADMIN')">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-select-1">Customer Care Center</label>
+
+        <div class="col-sm-9">
+          <select class="col-xs-10 col-sm-5" appBranch [(ngModel)]="item.branch" name="branch" id="form-field-select-1"></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-2">Short Description </label>
+        <div class="col-sm-9">
+          <input type="text" id="form-field-2" [(ngModel)]="item.shortDescription" name="shortDescription" placeholder="Short Description" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-3">Long Description (Eng) </label>
+        <div class="col-sm-9">
+          <textarea id="form-field-3" [(ngModel)]="item.longDescription" name="longDescription" placeholder="Long Description" class="col-xs-12 col-sm-5"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-4"> Long Description (Zulu)</label>
+        <div class="col-sm-9">
+          <textarea id="form-field-4" [(ngModel)]="item.zuluLongDescription" name="zuluLongDescription" placeholder="Zulu Long Description" class="col-xs-12 col-sm-5"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="idDocument-dropzone">Video </label>
+        <div class="col-sm-9">
+          <div id="idDocument-dropzone" class="fileinput-dropzone" >
+            <span>Drop a video  or click to upload video.</span>
+            <input id="idDocument-fileupload-dropzone" type="file" [(ngModel)]="item.attachment" name="idDocument"
+                   appFileupload></div>
+          <div id="idDocument-uploadList" class="list-group list-group-flush list-group-divider"
+               *ngIf="item.attachment">
+            <div class="list-group-item">
+              <div class="list-group-item-body"><h4 class="list-group-item-title">{{item.attachment.name}}
+                <a href="{{configService.getApi()}}/file/{{item.attachment.id}}" *ngIf="item.attachment.id"
+                   class="btn btn-sm btn-primary text-white" target="_blank">
+                  Download <i class="fa fa-download"></i>
+                </a>
+              </h4>
+              </div>
+              <div class="list-group-item-figure">
+                <button type="button" (click)="item.attachment =null" class="btn btn-sm btn-danger"><i
+                  class="fa fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+
+      <div class="clearfix form-actions">
+        <div class="col-md-offset-3 col-md-9">
+          <button class="btn btn-info" type="submit">
+            <i class="ace-icon fa fa-check bigger-110"></i>
+            Submit
+          </button>
+
+          &nbsp; &nbsp; &nbsp;
+          <button class="btn" type="reset">
+            <i class="ace-icon fa fa-undo bigger-110"></i>
+            Reset
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

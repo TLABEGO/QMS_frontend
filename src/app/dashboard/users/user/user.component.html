@@ -1,0 +1,170 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h3 class="header smaller lighter blue">{{title.getTitle()}}</h3></div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <form class="form-horizontal" role="form" #itemForm="ngForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-select-1">Role</label>
+        <div class="col-sm-9">
+          <div class="btn-group">
+            <button type="button" *ngIf="usersService.hasPermission('PERM_ADMIN')" class="btn" [ngClass]="item.role==='Admin' ? 'btn-primary':''" (click)="setRole('Admin')">Admin</button>
+            <button type="button" class="btn" [ngClass]="item.role==='Teller' ? 'btn-primary':''"  (click)="setRole('Teller')">Teller</button>
+            <button type="button" class="btn" [ngClass]="item.role==='BranchAdmin' ? 'btn-primary':''"  (click)="setRole('BranchAdmin')">Customer Care Center Manager</button>
+            <button type="button" class="btn" [ngClass]="item.role==='Contractor' ? 'btn-primary':''"  (click)="setRole('Contractor')">Contractor</button>
+            <button type="button" class="btn" [ngClass]="item.role==='Customer' ? 'btn-primary':''"  (click)="setRole('Customer')">Customer</button>
+            <button type="button" class="btn" [ngClass]="item.role==='Supervisor' ? 'btn-primary':''"  (click)="setRole('Supervisor')">Supervisor</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div *ngIf="(firstName.invalid && (firstName.dirty || firstName.touched))
+             || (lastName.invalid && (lastName.dirty || lastName.touched))
+             || (email.invalid && (email.dirty || email.touched))"
+             class="alert alert-danger">
+          <ul>
+
+            <li *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+              First Name is required.
+            </li>
+            <li *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+              Last Name is required.
+            </li>
+
+            <li *ngIf="email.invalid && (email.dirty || email.touched)">
+              email is required.
+            </li>
+
+
+          </ul>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="(item.role ==='Teller' || item.role ==='BranchAdmin' || item.role ==='Supervisor') && usersService.hasPermission('PERM_ADMIN')">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-select-1">Customer Care Center</label>
+
+        <div class="col-sm-9">
+          <select class="col-xs-10 col-sm-5" appBranch [(ngModel)]="item.branch" (ngModelChange)="branchChange()" name="branch" id="form-field-select-1"></select>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="item.role ==='Teller' && item.branch">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-select-11">Teller</label>
+
+        <div class="col-sm-9">
+          <select class="col-xs-10 col-sm-5" [(ngModel)]="item.teller" name="teller" appTellers [branchId]="item.branch.id" id="form-field-select-11"></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-2">First Name </label>
+        <div class="col-sm-9">
+          <input type="text" #firstName="ngModel" id="form-field-2" [(ngModel)]="item.firstName" name="firstName" placeholder="First Name" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-3">Last Name </label>
+        <div class="col-sm-9">
+          <input type="text" #lastName="ngModel" required="" id="form-field-3" [(ngModel)]="item.lastName" name="lastName"  placeholder="Last Name" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="item.role!=='Customer'">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-13">Username </label>
+        <div class="col-sm-9">
+          <input type="text" #username="ngModel" required="" id="form-field-13" [(ngModel)]="item.username" name="username"  placeholder="Username" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-6">Id Number</label>
+        <div class="col-sm-9">
+          <input type="text" #lastName="ngModel" required="" id="form-field-6" [(ngModel)]="item.idNumber" name="idNumber"  placeholder="Id Number" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-14">Contact Number</label>
+        <div class="col-sm-9">
+          <input type="text" #contactNumber="ngModel" required="" id="form-field-14" [(ngModel)]="item.contactNumber" name="contactNumber"  placeholder="Contact Number" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-5">Email </label>
+        <div class="col-sm-9">
+          <input type="text" id="form-field-5" #email="ngModel" required="" [(ngModel)]="item.email" name="email" placeholder="Email" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="item.role!=='Customer'">
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-12">Password </label>
+        <div class="col-sm-9">
+          <input type="password" id="form-field-12" #password="ngModel" required="" [(ngModel)]="item.password" name="password" placeholder="Password" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+
+
+      <div class="clearfix form-actions">
+        <div class="col-md-offset-3 col-md-9">
+          <button class="btn btn-info" type="submit">
+            <i class="ace-icon fa fa-check bigger-110"></i>
+            Submit
+          </button>
+
+          &nbsp; &nbsp; &nbsp;
+          <button class="btn" type="reset">
+            <i class="ace-icon fa fa-undo bigger-110"></i>
+            Reset
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row" *ngIf="item.id">
+
+  <div class="col-sm-12">
+    <div class="widget-box transparent" id="recent-box">
+      <div class="widget-header">
+        <h4 class="widget-title lighter smaller">
+          <i class="ace-icon fa fa-rss orange"></i>
+        </h4>
+
+        <div class="widget-toolbar no-border">
+          <ul class="nav nav-tabs" id="recent-tab">
+            <li class="active">
+              <a data-toggle="tab" href="#task-tab" aria-expanded="true">Tickets</a>
+            </li>
+
+            <li class="">
+              <a data-toggle="tab" href="#member-tab" aria-expanded="false">Covid Tracking</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+
+      <div class="widget-body">
+        <div class="widget-main padding-4">
+          <div class="tab-content padding-8">
+            <div id="task-tab" class="tab-pane active">
+              <h4 class="smaller lighter green">
+                <i class="ace-icon fa fa-list"></i>
+                Tickets
+              </h4>
+              <app-tickets [user]="item"></app-tickets>
+            </div>
+
+            <div id="member-tab" class="tab-pane">
+              <app-entries [user]="item"></app-entries>
+            </div>
+          </div>
+        </div><!-- /.widget-main -->
+      </div><!-- /.widget-body -->
+    </div><!-- /.widget-box -->
+  </div><!-- /.col -->
+
+</div>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.seedinc.msrv</groupId>
+  <artifactId>qms-ui</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.6</version>
+        <configuration>
+          <nodeVersion>v12.16.1</nodeVersion>
+          <npmVersion>6.13.4</npmVersion>
+        </configuration>
+        <executions>
+          <execution>
+            <id>install node and npm</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>npm install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>install --production</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>angular-cli install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>install --no-optional -g angular-cli</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm run-script prod</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run-script prod</arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+
+        <configuration>
+          <webXml>web.xml</webXml>
+          <webResources>
+            <resource>
+              <directory>dist</directory>
+            </resource>
+            <resource>
+              <directory>${basedir}</directory>
+              <filtering>true</filtering>
+              <targetPath>WEB-INF</targetPath>
+              <includes>
+                <include>**/rewrite.config</include>
+              </includes>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>

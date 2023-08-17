@@ -1,0 +1,152 @@
+<div class="row">
+  <form class="form-horizontal" role="form">
+    <div class="form-group">
+      <label class="col-sm-3 control-label no-padding-right">Date Range</label>
+
+      <div class="col-sm-9">
+											<span class="input-icon">
+												<input type="text" placeholder="{{this.reportForm.start}}" [(ngModel)]="start" name="start"
+                               ngbDatepicker #d="ngbDatepicker" (ngModelChange)="search()" (click)="d.toggle()"
+                               id="form-field-icon-1">
+												<i class="ace-icon fa fa-calendar blue"></i>
+											</span>
+
+        <span class="input-icon input-icon-right">
+												<input type="text" placeholder="{{this.reportForm.end}}" [(ngModel)]="end" name="end"
+                               ngbDatepicker #d2="ngbDatepicker" (ngModelChange)="search()" (click)="d2.toggle()"
+                               id="form-field-icon-2">
+												<i class="ace-icon fa fa-calendar green"></i>
+											</span>
+      </div>
+    </div>
+    <div class="form-group" *ngIf="usersService.hasPermission('PERM_ADMIN')">
+      <label class="col-sm-3 control-label no-padding-right">Customer Care Center</label>
+      <div class="col-sm-9">
+        <select class="col-xs-6 col-sm-5" appBranch [(ngModel)]="reportForm.branch" (onSelect)="search()"
+                name="branch"></select>
+      </div>
+    </div>
+    <div class="form-group" *ngIf="reportForm.branch">
+      <label class="col-sm-3 control-label no-padding-right">Service</label>
+      <div class="col-sm-9">
+        <select class="col-xs-6 col-sm-5" appService [(ngModel)]="reportForm.service" [branchId]="reportForm.branch.id"
+                (onSelect)="search()" name="service"></select>
+      </div>
+    </div>
+
+
+
+  </form>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h3 class="header smaller lighter blue">{{title.getTitle()}}</h3>
+
+        <div class="clearfix">
+          <div class="pull-right tableTools-container">
+<!--            <button routerLink="/dashboard/abandoned-ticket" class="btn btn-warning">Create New</button>-->
+          </div>
+        </div>
+        <div class="table-header hidden-480">
+
+          <strong>Results for "Latest Registered {{title.getTitle()}}"</strong> &nbsp;
+        </div>
+
+        <!-- div.table-responsive -->
+
+        <!-- div.dataTables_borderWrap -->
+        <div>
+          <div id="dynamic-table_wrapper" class="dataTables_wrapper form-inline no-footer">
+
+            <table id="dynamic-table" class="table table-striped table-bordered table-hover dataTable no-footer"
+                   role="grid" aria-describedby="dynamic-table_info">
+              <thead>
+              <tr role="row">
+
+                <th class="" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Teller
+                </th>
+                <th class="hidden-480" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Generated Date
+                </th>
+
+                <th class="" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Customer Care Center
+                </th>
+
+                <th class="" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Service
+                </th>
+
+                <th class="" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Status
+                </th>
+
+<!--                <th class="" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"-->
+<!--                    aria-label="Domain: activate to sort column ascending">Edit-->
+<!--                </th>-->
+<!--                <th class="" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"-->
+<!--                    aria-label="Domain: activate to sort column ascending">Delete-->
+<!--                </th>-->
+              </tr>
+              </thead>
+
+              <tbody>
+
+
+              <tr role="row" class="odd" *ngFor="let ticket of results">
+                <td> {{ticket.teller?ticket.teller.name:'-'}}</td>
+                <td class="hidden-480">
+                 {{ticket.createDate| date: 'dd MMM yyyy HH:mm'}}
+                </td>
+
+                <td> {{ticket.branch?ticket.branch.name:'-'}}</td>
+
+                <td> {{ticket.service?ticket.service.name:'-'}}</td>
+
+                <td> {{ticket.status}}</td>
+<!--                <td class="text-center">-->
+<!--                  <a class="green" routerLink="/dashboard/ticket/{{ticket.id}}">-->
+<!--                    <i class="ace-icon fa fa-pencil bigger-130"></i>-->
+<!--                  </a>-->
+<!--                </td>-->
+<!--                <td class="text-center">-->
+<!--                  <i class="ace-icon fa fa-trash-o bigger-130 red"></i>-->
+<!--                </td>-->
+
+              </tr>
+              <tr *ngIf="results.length< 1">
+                <td colspan="5" class="text-center">
+                  No results found
+                </td>
+              </tr>
+
+              </tbody>
+            </table>
+
+            <div class="row hidden-480"  *ngIf="results.length> 0" style="background-color: #ff6d04">
+              <div class="col-xs-6">
+                <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">Showing {{((currentPage-1)*perPage)+1}} to {{data.numberOfElements*currentPage}} of
+                  {{data.totalElements}} entries
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="dataTables_paginate paging_simple_numbers" id="dynamic-table_paginate">
+                  <ngb-pagination [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage" [maxSize]="10"
+                                  [rotate]="true" (pageChange)="search()"></ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- PAGE CONTENT ENDS -->
+  </div><!-- /.col -->
+</div>

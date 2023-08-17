@@ -1,0 +1,39 @@
+<div class="row" *ngIf="branch">
+  <div class="alert alert-block alert-success" style="background-color: #0e457c; color: white">
+    <i class="fa fa-angle-left fa-2x col-lg-offset-2 text-left" style="color: white;" routerLink="/mobile-landing"></i>
+    <div class="text-center">
+      {{branch.name}}'s number of tickets in queue
+  </div>
+</div>
+
+<div class="row" *ngIf="branch">
+  <div class="center">
+    <div class="page-header">
+      <h4 style="color: orange">
+        Select a service to book a slot in a queue at {{branch.name}} customer center
+      </h4>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class=" col-lg-12 text-center container">
+    <button *ngFor="let service of totalWaiting.keys()" (click)="selectService(service)"
+            class="col btn btn-primary btn-lg btn-space">
+      {{service.name}}
+      <span style="color: white" class="badge badge-danger">
+        {{totalWaiting.get(service)}}
+      </span>
+    </button>
+  </div>
+
+</div>
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">Queue Management System</span>
+							 &copy; {{date | date: 'yyyy'}}
+						</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,313 @@
+<div class="page-header">
+
+  <div class="clearfix">
+
+    <div class="pull-right tableTools-container">
+      <button (click)="exportAsPDF()" class="btn btn-warning"><i class="fa fa-file-pdf-o"></i> Pint</button>
+      &nbsp;
+      <button (click)="exportAsExcel('Description')" class="btn btn-warning"><i class="fa fa-file-excel-o"></i> Service Description Report</button>
+      &nbsp;
+      <button (click)="exportAsExcel('Duration')" class="btn btn-warning"><i class="fa fa-file-excel-o"></i> Duration
+        Report
+      </button>
+
+      &nbsp;
+      <button (click)="exportAsExcel('Close')" class="btn btn-warning"><i class="fa fa-file-excel-o"></i> Closed
+        Tickets Report
+      </button>
+
+      &nbsp;
+      <button (click)="exportAsExcel('Active')" class="btn btn-warning"><i class="fa fa-file-excel-o"></i> Active
+        Tickets Report
+      </button>
+
+      &nbsp;
+      <button (click)="exportAsExcel('Abandon')" class="btn btn-warning"><i class="fa fa-file-excel-o"></i> Abandoned
+        Tickets Report
+      </button>
+    </div>
+  </div>
+</div>
+<div id="report">
+
+  <div class="page-header">
+
+    <div class="clearfix">
+      <img src="assets/images/logo.png" width="200">
+      <span class="bigger blue" style="font-size: 400%">QMS Report</span>
+      <span class="pull-right">
+        <span class="text-danger">{{this.reportForm.start}}</span>
+         -
+      <span class="text-success">{{this.reportForm.end}}</span>
+        </span>
+    </div>
+  </div>
+  <div class="row">
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Date Range</label>
+
+        <div class="col-sm-9">
+											<span class="input-icon">
+												<input type="text" placeholder="{{this.reportForm.start}}" [(ngModel)]="start" name="start"
+                               ngbDatepicker #d="ngbDatepicker" (ngModelChange)="search()" (click)="d.toggle()"
+                               id="form-field-icon-1">
+												<i class="ace-icon fa fa-calendar blue"></i>
+											</span>
+
+          <span class="input-icon input-icon-right">
+												<input type="text" placeholder="{{this.reportForm.end}}" [(ngModel)]="end" name="end"
+                               ngbDatepicker #d2="ngbDatepicker" (ngModelChange)="search()" (click)="d2.toggle()"
+                               id="form-field-icon-2">
+												<i class="ace-icon fa fa-calendar green"></i>
+											</span>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="usersService.hasPermission('PERM_ADMIN')">
+        <label class="col-sm-3 control-label no-padding-right">Customer Care Center</label>
+        <div class="col-sm-9">
+          <select class="col-xs-6 col-sm-5" appBranch [(ngModel)]="reportForm.branch" (onSelect)="search()"
+                  name="branch"></select>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="reportForm.branch">
+        <label class="col-sm-3 control-label no-padding-right">Service</label>
+        <div class="col-sm-9">
+          <select class="col-xs-6 col-sm-5" appService [(ngModel)]="reportForm.service"
+                  [branchId]="reportForm.branch.id"
+                  (onSelect)="search()" name="service"></select>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="reportForm.branch">
+        <label class="col-sm-3 control-label no-padding-right">Teller</label>
+        <div class="col-sm-9">
+          <select class="col-xs-6 col-sm-5" appTellers [(ngModel)]="reportForm.teller" [branchId]="reportForm.branch.id"
+                  (onSelect)="search()" name="teller"></select>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="reportForm.branch">
+        <label class="col-sm-3 control-label no-padding-right">Closing Reason</label>
+        <div class="col-sm-9">
+          <select class="col-xs-6 col-sm-5" appClosingReason [(ngModel)]="reportForm.closingReason"
+                  [branchId]="reportForm.branch.id"
+                  (onSelect)="search()" name="service"></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Ticket Status</label>
+        <div class="col-sm-9">
+          <div class="btn-group">
+            <button type="button" class="btn" [ngClass]="reportForm.status==='SERVICED' ? 'btn-primary':''"
+                    (click)="reportForm.status='SERVICED';search()">SERVICED
+            </button>
+            <button type="button" class="btn" [ngClass]="reportForm.status==='WAITING' ? 'btn-primary':''"
+                    (click)="reportForm.status='WAITING';search()">WAITING
+            </button>
+            <button type="button" class="btn" [ngClass]="reportForm.status==='ABANDON' ? 'btn-primary':''"
+                    (click)="reportForm.status='ABANDON';search()">ABANDON
+            </button>
+            <button type="button" class="btn" [ngClass]="reportForm.status==='SERVICING' ? 'btn-primary':''"
+                    (click)="reportForm.status='SERVICING';search()">SERVICING
+            </button>
+            <button type="button" class="btn" [ngClass]="reportForm.status==='SERVICING' ? 'btn-primary':''"
+                    (click)="reportForm.status=null;search()">Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="widget-box transparent">
+          <div class="widget-header widget-header-flat">
+            <h4 class="widget-title lighter">
+              <i class="ace-icon fa fa-pie-chart orange"></i>
+              Status report
+            </h4>
+
+            <div class="widget-toolbar">
+              <a href="#" data-action="collapse">
+                <i class="ace-icon fa fa-chevron-up"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="widget-body">
+            <div class="widget-main no-padding">
+              <canvas baseChart
+                      [data]="chartData"
+                      [labels]="chartLabels"
+                      [colors]="colors"
+                      [chartType]="'pie'">
+
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="clearfix">
+            <div class="pull-right tableTools-container">
+            </div>
+          </div>
+          <div class="table-header">
+            <i class="ace-icon fa fa-table"></i> Status report
+          </div>
+          <div>
+            <div id="dynamic-table_wrapper" class="dataTables_wrapper form-inline no-footer">
+              <table id="dynamic-table" class="table table-striped table-bordered table-hover dataTable no-footer"
+                     role="grid" aria-describedby="dynamic-table_info">
+                <tbody>
+                <tr role="row" class="odd" *ngFor="let statusCount of statusCount">
+                  <td>
+                    {{statusCount.id}}
+                  </td>
+
+                  <td>
+                    {{statusCount.count}}
+
+
+                </tr>
+                <tr *ngIf="!statusCount || statusCount.length< 1">
+                  <td colspan="2" class="text-center">
+                    No results found
+                  </td>
+                </tr>
+
+                </tbody>
+              </table>
+              <div class="row" *ngIf="results.length> 0">
+                <div class="col-xs-6">
+                  <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">
+                    Showing {{currentPage}} to {{data.numberOfElements}} of
+                    {{data.totalElements}} entries
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-sm-6">
+      <div class="widget-box transparent">
+        <div class="widget-header widget-header-flat">
+          <h4 class="widget-title lighter">
+            <i class="ace-icon fa fa-line-chart orange"></i>
+            Status report
+          </h4>
+
+          <div class="widget-toolbar">
+            <a href="#" data-action="collapse">
+              <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <canvas
+              baseChart
+              [chartType]="'line'"
+              [datasets]="lineChartData"
+              [labels]="lineChartLabels"
+              [options]="chartOptions"
+              [legend]="true">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="widget-box transparent">
+        <div class="widget-header widget-header-flat">
+          <h4 class="widget-title lighter">
+            <i class="ace-icon fa fa-pie-chart orange"></i>
+            Branch report
+          </h4>
+
+          <div class="widget-toolbar">
+            <a href="#" data-action="collapse">
+              <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <canvas baseChart
+                    [data]="branchChartData"
+                    [labels]="branchChartLabels"
+                    [colors]="branchColors"
+                    [chartType]="'bar'">
+
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="widget-box transparent">
+        <div class="widget-header widget-header-flat">
+          <h4 class="widget-title lighter">
+            <i class="ace-icon fa fa-table orange"></i>
+            Branch report
+          </h4>
+
+          <div class="widget-toolbar">
+            <a href="#" data-action="collapse">
+              <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <div>
+              <div id="dynamic-table_wrapper_branch" class="dataTables_wrapper form-inline no-footer">
+                <table id="dynamic-table_branch"
+                       class="table table-striped table-bordered table-hover dataTable no-footer"
+                       role="grid" aria-describedby="dynamic-table_info">
+                  <tbody>
+                  <tr role="row" class="odd" *ngFor="let branchCount of branchCount">
+                    <td *ngIf="branchCount.id">
+                      {{branchCount.id.name}}
+                    </td>
+
+                    <td *ngIf="branchCount.id">
+                      {{branchCount.count}}
+                  </tr>
+                  <tr *ngIf="!statusCount || statusCount.length< 1">
+                    <td colspan="2" class="text-center">
+                      No results found
+                    </td>
+                  </tr>
+
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,117 @@
+<div class="main-container" style="background-color: #002508;">
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-1" >
+        <div class="login-container" >
+          <div class="position-relative">
+            <div id="login-box"  *ngIf="!reset" class=" visible  no-border" >
+              <div  style="background-color: #f67607; padding: 15px;margin-top: 30%;margin-bottom: 41%; border-radius: 5px !important">
+                <div class="widget-main">
+                  <h4 class="center">
+                    <img src="assets/images/logo-v3.png"><br/>
+                    Queue Management System
+                  </h4>
+
+                  <div class="space-6"></div>
+
+                  <form class="form-horizontal" role="form" #itemForm="ngForm" (ngSubmit)="onLogin()">
+                    <fieldset>
+                      <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" [(ngModel)]="login.username" name="username" class="form-control" placeholder="Username" />
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+                      </label>
+
+                      <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password" [(ngModel)]="login.password" name="password" class="form-control" placeholder="Password" />
+															<i class="ace-icon fa fa-lock"></i>
+														</span>
+                      </label>
+
+                      <div class="space"></div>
+
+                      <div class="clearfix">
+<!--                        <label class="inline">-->
+<!--                          <input type="checkbox" class="ace" />-->
+<!--                          <span class="lbl"> Remember Me</span>-->
+<!--                        </label>-->
+
+                        <button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
+                          <i class="ace-icon fa fa-key"></i>
+                          <span class="bigger-110">Login</span>
+                        </button>
+                      </div>
+
+                      <div class="space-4"></div>
+                    </fieldset>
+                  </form>
+
+
+                  <div class="space-6"></div>
+                </div><!-- /.widget-main -->
+
+<!--                <div class="toolbar clearfix">-->
+<!--                  <div>-->
+<!--                    <a href="#" (click)="reset=true;"  data-target="#forgot-box" class="forgot-password-link">-->
+<!--                      <i class="ace-icon fa fa-arrow-left"></i>-->
+<!--                      I forgot my password-->
+<!--                    </a>-->
+<!--                  </div>-->
+
+<!--                  &lt;!&ndash;div>-->
+<!--                    <a href="#" data-target="#signup-box" class="user-signup-link">-->
+<!--                      I want to register-->
+<!--                      <i class="ace-icon fa fa-arrow-right"></i>-->
+<!--                    </a>-->
+<!--                  </div&ndash;&gt;-->
+<!--                </div>-->
+              </div>
+            </div>
+
+            <div id="forgot-box" *ngIf="reset" class="forgot-box widget-box no-border">
+              <div class="widget-body">
+                <div class="widget-main">
+                  <h4 class="header red lighter bigger">
+                    <i class="ace-icon fa fa-key"></i>
+                    Retrieve Password
+                  </h4>
+
+                  <div class="space-6"></div>
+                  <p>
+                    Enter your email and to receive instructions
+                  </p>
+
+                  <form class="form-horizontal" role="form" #itemForm="ngForm" (ngSubmit)="onReset()">
+                    <fieldset>
+                      <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="email" [(ngModel)]="login.username" type="text" class="form-control" placeholder="Email" />
+															<i class="ace-icon fa fa-envelope"></i>
+														</span>
+                      </label>
+
+                      <div class="clearfix">
+                        <button type="submit" class="width-35 pull-right btn btn-sm btn-danger">
+                          <i class="ace-icon fa fa-lightbulb-o"></i>
+                          <span class="bigger-110">Send Me!</span>
+                        </button>
+                      </div>
+                    </fieldset>
+                  </form>
+                </div>
+
+                <div class="toolbar center">
+                  <a href="#" (click)="reset=false;" data-target="#login-box" class="back-to-login-link">
+                    Back to login
+                    <i class="ace-icon fa fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

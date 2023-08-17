@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col-xs-12">
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h3 class="header smaller lighter blue">{{title.getTitle()}}</h3>
+        <div class="table-header">
+
+          <strong class="hidden-480">Results for "Latest Registered {{title.getTitle()}}"</strong> &nbsp;
+          <select  class="form-control"  *ngIf="usersService.hasPermission('PERM_ADMIN')" appBranch [(ngModel)]="branch" (onSelect)="search()"
+                   name="branch"></select>
+          <label class="pull-right hidden-480">
+            <input type="search" style="margin-top: 5px"  [(ngModel)]="keyword" (ngModelChange)="search()"
+                   class="form-control input-sm "
+                   placeholder="Search"
+                   aria-controls="dynamic-table">
+          </label>
+        </div>
+
+        <div>
+          <div id="dynamic-table_wrapper" class="dataTables_wrapper form-inline no-footer">
+            <table id="dynamic-table" class="table table-striped table-bordered table-hover dataTable no-footer"
+                   role="grid" aria-describedby="dynamic-table_info">
+              <thead>
+              <tr role="row">
+
+                <th class="hidden-480" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending" >Device Id
+                </th>
+                <th tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending"> Device Type
+                </th>
+                <th class="hidden-480"  tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Registered Date
+                </th>
+                <th class="" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Branch
+                </th>
+
+                <th class="hidden-480" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending" >Last Updated
+                </th>
+
+                <th class="text-center hidden-480" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending" >
+                </th>
+
+                <th class="text-center" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending" >Status
+                </th>
+
+                <th class="hidden-480">
+                </th>
+
+              </tr>
+              </thead>
+              <tbody>
+              <tr role="row" class="odd" *ngFor="let deviceConnectivity of results">
+                <td class="hidden-480" style="word-wrap: break-word;">
+                  {{deviceConnectivity.deviceId}}
+                </td>
+                <td class="text-center">
+                  {{deviceConnectivity.type?deviceConnectivity.type:''}}
+                </td>
+                <td class="hidden-480">
+                  {{deviceConnectivity.createDate| date: 'dd MMM yyyy HH:mm'}}
+                </td>
+                <td>
+                  {{deviceConnectivity.branch.name}}
+                </td>
+                <td class="hidden-480">
+                  {{deviceConnectivity.lastUpdate| date: 'dd MMM yyyy HH:mm:ss'}}
+                </td>
+                <td class="text-center">
+                  <i class="fa fa-wifi fa-2x" [ngClass]="lessThanThreeMinuteAgo(deviceConnectivity.lastUpdate) ? 'text-success':'text-danger'"></i>
+                  {{lessThanThreeMinuteAgo(deviceConnectivity.lastUpdate) ?'Online':'Offline'}}
+                </td>
+                <td class="text-center hidden-480">
+                  {{deviceConnectivity.report?deviceConnectivity.report:''}}
+                </td>
+                <td class="text-center hidden-480">
+                  <div class="hidden-sm hidden-xs action-buttons">
+                    <i class="ace-icon fa fa-trash-o bigger-130 red" (click)="remove(deviceConnectivity)"></i>
+                  </div>
+
+                </td>
+
+              </tr>
+              <tr *ngIf="results.length< 1">
+                <td colspan="8" class="text-center">
+                  No results found
+                </td>
+              </tr>
+
+              </tbody>
+            </table>
+            <div class="row hidden-480"  *ngIf="results.length> 0" style="background-color: #ff6d04">
+              <div class="col-xs-6">
+                <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">Showing {{((currentPage-1)*perPage)+1}} to {{data.numberOfElements*currentPage}} of
+                  {{data.totalElements}} entries
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="dataTables_paginate paging_simple_numbers" id="dynamic-table_paginate">
+                  <ngb-pagination [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage" [maxSize]="10"
+                                  [rotate]="true" (pageChange)="search()"></ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.col -->
+</div>

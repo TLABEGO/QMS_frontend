@@ -1,0 +1,141 @@
+<div *ngIf="item" class="modal fade" id="closeReasonModal" tabindex="-1" role="dialog"
+     aria-labelledby="closeReasonModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="closeReasonModalLabel">Select reason for abandoning ticket</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button *ngFor="let closingReason of closingReasons" class="btn btn-primary btn-space"
+                (click)="close(item,closingReason)" data-dismiss="modal">
+          {{closingReason.name}}
+        </button>
+      </div>
+      <div class="modal-footer" *ngIf="item && item.closingReason && item.closingReason.id">
+        <button type="button" class="btn" data-dismiss="modal">Abandoned</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" style="background-color: #002508;padding: 10px;">
+  <h1 class="center">
+    <img src="assets/images/coe-logo-sml.png" width="10%">
+  </h1>
+</div>
+<div class="row">
+  <div class="center">
+      <h1 style="color: orange">
+        Ticket  Details
+      </h1>
+
+  </div>
+</div>
+<div class="row well" *ngIf="item">
+
+  <table class="table table-bordered">
+    <tbody>
+    <tr>
+      <td>
+        <h2>
+          Ticket #
+        </h2>
+
+      </td>
+      <td class="center">
+        <h2>
+        {{item.reference}}
+        </h2>
+      </td>
+    </tr>
+    <tr>
+      <td>
+          Date & Time
+      </td>
+      <td class="center">
+          {{item.createDate| date: 'dd MMM yyyy HH:mm'}}
+      </td>
+    </tr>
+    <tr *ngIf="item.service && item.status ==='WAITING'">
+      <td class="center" colspan="3">
+        <a class="btn btn-success" href="{{configService.getApi()+'tickets/download/'+item.id+'/'+item.service.name + ' at ' + item.branch.name + ' Ekurhuleni Customer Care Centre.ics'}}">
+          <i class="fa fa-calendar"></i>
+          Add to calender</a>
+      </td>
+    </tr>
+    <tr *ngIf="item.service">
+      <td>
+        Service
+      </td>
+      <td class="center">
+        {{item.service.name}}
+      </td>
+    </tr>
+    <tr *ngIf="item.teller">
+      <td>
+        Teller
+      </td>
+      <td class="center">
+        {{item.teller.name}}
+      </td>
+    </tr>
+    <tr *ngIf="item.status">
+      <td>
+        Ticket Status
+      </td>
+      <td class="center">
+        {{item.status}}
+      </td>
+    </tr>
+
+    <tr *ngIf="item.service && item.service.branch.enableCovidScreening && item.entry && !item.entry.temperature">
+      <td colspan="2">
+
+        <div class="form-group container">
+          <label class="col-sm-6 control-label no-padding-right" for="form-field-4">Temperature
+          <br/>
+            <strong *ngIf="item.branch">Note: Please confirm your temperature when you get to {{item.branch.name}}</strong>
+          </label>
+
+          <div class="col-sm-6">
+          <span class="input-icon input-icon-right">
+                <input type="text" id="form-field-4" required name="temperature" [(ngModel)]="temperature"
+                       id="form-field-icon-2" pattern="[0-9]*\.?[0-9]*">
+                <i class="ace-icon ">&#8451;</i>
+              </span>
+            <button class="btn btn-primary" (click)="confirmTemperature()">Confirm Temperature</button>
+          </div>
+        </div>
+
+      </td>
+
+    </tr>
+
+
+
+
+
+    </tbody>
+  </table>
+
+
+</div>
+<div class="row text-center" *ngIf="item && item.status ==='WAITING'">
+      <button type="button" data-toggle="modal" data-target="#closeReasonModal" class="btn btn-danger">
+        <i class="fa fa-close"></i>
+        Abandon</button>
+
+</div>
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">Queue Management System</span>
+							 &copy; {{date | date: 'yyyy'}}
+						</span>
+    </div>
+  </div>
+</div>

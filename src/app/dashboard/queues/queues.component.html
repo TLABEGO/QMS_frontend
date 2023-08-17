@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="col-xs-12">
+
+    <div class="row">
+      <div class="col-xs-12">
+        <h3 class="header smaller lighter blue">{{title.getTitle()}}</h3>
+
+        <div class="clearfix">
+          <div class="pull-right tableTools-container">
+            <!--            <button routerLink="/dashboard/abandoned-ticket" class="btn btn-warning">Create New</button>-->
+          </div>
+        </div>
+        <div class="table-header">
+
+          <label class="pull-left hidden-480" *ngIf="usersService.hasPermission('PERM_ADMIN')">Filter by Customer Care Center
+          </label>
+          <select  class="form-control"  *ngIf="usersService.hasPermission('PERM_ADMIN')" appBranch [(ngModel)]="branch" (onSelect)="search()"
+                   name="branch"></select>
+          <label class="pull-right hidden-480">
+            <input type="search" style="margin-top: 5px"  [(ngModel)]="keyword" (ngModelChange)="search()"
+                   class="form-control input-sm "
+                   placeholder="Search"
+                   aria-controls="dynamic-table">
+          </label>
+        </div>
+
+        <!-- div.table-responsive -->
+
+        <!-- div.dataTables_borderWrap -->
+        <div>
+          <div id="dynamic-table_wrapper" class="dataTables_wrapper form-inline no-footer">
+
+            <table id="dynamic-table" class="table table-striped table-bordered table-hover dataTable no-footer"
+                   role="grid" aria-describedby="dynamic-table_info">
+              <thead>
+              <tr role="row">
+
+                <th class="" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Generated Date
+                </th>
+
+                <th class="" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Customer Care Center
+                </th>
+
+                <th class="" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Service
+                </th>
+
+                <th class="text-center" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1"
+                    aria-label="Domain: activate to sort column ascending">Highest Ticket Number
+                </th>
+
+
+              </tr>
+              </thead>
+
+              <tbody>
+
+
+              <tr role="row" class="odd" *ngFor="let ticket of results">
+                <td>
+                  <a routerLink="/dashboard/ticket/{{ticket.id}}">{{ticket.createDate| date: 'dd MMM yyyy HH:mm'}}</a>
+                </td>
+
+                <td> {{ticket.branch?ticket.branch.name:'-'}}</td>
+
+                <td> {{ticket.service?ticket.service.name:'-'}}</td>
+
+                <td class="text-center"> {{ticket.max}}</td>
+
+              </tr>
+              <tr *ngIf="results.length< 1">
+                <td colspan="5" class="text-center">
+                  No results found
+                </td>
+              </tr>
+
+              </tbody>
+            </table>
+            <div class="row hidden-480"  *ngIf="results.length> 0" style="background-color: #ff6d04">
+              <div class="col-xs-6">
+                <div class="dataTables_info" id="dynamic-table_info" role="status" aria-live="polite">Showing {{((currentPage-1)*perPage)+1}} to {{data.numberOfElements*currentPage}} of
+                  {{data.totalElements}} entries
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="dataTables_paginate paging_simple_numbers" id="dynamic-table_paginate">
+                  <ngb-pagination [collectionSize]="totalItems" [pageSize]="perPage" [(page)]="currentPage" [maxSize]="10"
+                                  [rotate]="true" (pageChange)="search()"></ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.col -->
+</div>

@@ -1,0 +1,157 @@
+<div class="row" *ngIf="service">
+  <div class="alert alert-block alert-success" style="background-color: #0e457c; color: white">
+    <i class="fa fa-angle-left fa-2x col-lg-offset-2 text-left" style="color: white;"
+       routerLink="/mobile-display/{{service.branch.id}}"></i>
+    <div class="text-center">
+      Select Date you will be visiting {{service.branch.name}} for {{service.name}}
+    </div>
+  </div>
+</div>
+<div id="fullCalModal" class="modal fade demo-modal-std">
+  <div class="modal-dialog">
+    <form autocomplete="off" #itemForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modalTitle" class="mt-0 modal-title">Default modal</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span>×</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="col-xl-12">
+            <div class="alert alert-warning text-center">
+              <strong>We use the details below to schedule and remind you of your booking.</strong>
+            </div>
+          </div>
+          <div class="col-xl-12">
+            <div class="alert alert-danger" [hidden]="itemForm.valid || itemForm.untouched">
+              <div *ngIf="selectedTime.errors && selectedTime.errors.required">
+                Time is required
+              </div>
+              <div *ngIf="firstName.errors && firstName.errors.required">
+                First Name is required
+              </div>
+
+              <div *ngIf="firstName.errors && firstName.errors.pattern">
+                First Name is invalid
+              </div>
+              <div *ngIf="contactNumber.errors && contactNumber.errors.required">
+                Contact Number is required
+              </div>
+
+              <div *ngIf="contactNumber.errors && contactNumber.errors.pattern">
+                Contact Number is invalid
+              </div>
+
+              <div *ngIf="contactemail.errors && contactemail.errors.required">
+                Email is required
+              </div>
+              <div *ngIf="contactemail.errors && contactemail.errors.pattern">
+                Email is invalid
+              </div>
+
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="createDate">Confirm Time: <span
+                  class="text-muted text-danger">*</span></label>
+                <div class="col-sm-9">
+                  <input class="form-control" id="createDate" [(ngModel)]="time"  name="createDate"
+                         autocomplete="off"  #selectedTime="ngModel" required placeholder="Select Time" readonly [ticket]="ticket" [date]="ticket.createDate" appClockPicker
+                         type="text">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="contactNumber">First Name: <span
+                  class="text-muted text-danger">*</span></label>
+                <div class="col-sm-9">
+                  <input class="form-control" id="firstName" [(ngModel)]="ticket.client.firstName"
+                         name="firstName" autocomplete="off" required placeholder="First Name" type="text"
+                         #firstName="ngModel"
+                         pattern="^[a-zA-Z\s]*$">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="contactNumber">Contact Number: <span
+                  class="text-muted text-danger">*</span></label>
+                <div class="col-sm-9">
+                  <input class="form-control" id="contactNumber" [(ngModel)]="ticket.client.contactNumber"
+                         name="contactNumber" autocomplete="off" required placeholder="Contact number" type="text"
+                         #contactNumber="ngModel"
+                         pattern="^[0-9]{10,10}$">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="contactNumber">Email: <span
+                  class="text-muted text-danger">*</span></label>
+                <div class="col-sm-9">
+                  <input class="form-control" id="email" [(ngModel)]="ticket.client.email" name="email"
+                         autocomplete="off" required placeholder="Email address" type="email"
+                         #contactemail="ngModel"
+                         pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+
+                </div>
+              </div>
+            </div>
+          </div>
+<!--          <p>-->
+<!--            <br/>-->
+<!--            <span class="text-muted text-danger"> <strong>Note:</strong> Operating hours are <strong>9:00 - 15:00 Mon - Fri</strong>. <br/>-->
+<!--              Closed on all public holidays.<br/>-->
+<!--              The clock will default to these times if you choose outside operating hours</span>-->
+<!--          </p>-->
+        </div>
+        <div class="modal-footer">
+          <!--          <button class="btn btn-danger box-shadow&#45;&#45;8dp" type="button" (click)="delete()" data-dismiss="modal">-->
+          <!--            Delete-->
+          <!--          </button>-->
+          <button class="btn btn-secondary box-shadow--8dp" type="button" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-info box-shadow--8dp" [disabled]="!itemForm.valid" type="submit">Confirm</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row container " *ngIf="service">
+  <div class="col-lg-6 text-center" *ngIf="service.onlineService">
+      <h4> {{service.onlineService.name}}</h4>
+      <span class="text-left" [innerHTML]="service.onlineService.description"></span>
+    <a class="btn btn-success btn-sm"   [href]="service.onlineService.url">Click here to visit {{service.onlineService.name}}</a>
+
+  </div>
+  <div class="col-lg-6 pull-right">
+    <span class="text-muted text-danger text-center"> <strong>Note:</strong> Operating hours are <strong>9:00 - 15:00 Mon - Fri</strong><br/>
+    Closed on all public holidays.<br/></span>
+
+  </div>
+</div>
+<div class="row container text-center" *ngIf="service">
+  <div class="col-lg-12">
+    <div id="calendar" appMobileSelectDate [(ngModel)]="ticket" name="ticket"></div>
+  </div>
+</div>
+<div class="footer" *ngIf="service">
+  <div class="footer-inner">
+    <div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">Queue Management System</span>
+							 &copy; {{dt | date: 'yyyy'}}
+						</span>
+    </div>
+  </div>
+</div>

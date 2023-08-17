@@ -1,0 +1,245 @@
+<div class="row">
+  <div class="alert alert-block alert-success text-center" style="background-color: #0e457c; color: white">
+    <strong>
+      <img src="assets/images/covid.png" width="10%"> COVID-19 SCREENING QUESTIONNAIRE
+    </strong>
+  </div>
+</div>
+<div class="row">
+  <div class="page-header">
+      <span style="color: orange" class="col-md-offset-1">
+        In order to prevent the spread of the coronavirus and reduce the potential risk of exposure to our customers, we are asking everyone to complete and submit this questionnaire prior to entering our customer care centres.
+      </span>
+  </div>
+</div>
+<div class="row" *ngIf="itemForm" [hidden]="itemForm.valid || itemForm.untouched">
+  <div class="alert alert-danger container">
+
+    <div *ngIf="firstName && firstName.errors && firstName.errors.required">
+      First Name is required
+    </div>
+
+    <div *ngIf="firstName &&  firstName.errors && firstName.errors.pattern">
+      First Name is invalid
+    </div>
+
+    <div *ngIf="lastName && lastName.errors && lastName.errors.required">
+      Surname is required
+    </div>
+
+    <div *ngIf="lastName &&  lastName.errors && lastName.errors.pattern">
+      Surname is invalid
+    </div>
+
+    <div *ngIf="contactNumber && contactNumber.errors && contactNumber.errors.required">
+      Contact Number is required
+    </div>
+
+    <div *ngIf="contactNumber && contactNumber.errors && contactNumber.errors.pattern">
+      Contact Number is invalid
+    </div>
+
+    <div *ngIf="idNumber && idNumber.errors && idNumber.errors.required">
+      Id Number/Passport is required
+    </div>
+
+    <div *ngIf="idNumber &&  idNumber.errors && idNumber.errors.pattern">
+      Id Number/Passport is invalid
+    </div>
+
+
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 ">
+    <form class="form-horizontal " role="form" #itemForm="ngForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group container">
+        <label class="col-sm-6 control-label no-padding-right" for="form-field-2">First Name </label>
+        <div class="col-sm-6">
+          <input type="text" id="form-field-2" #firstName="ngModel" required [(ngModel)]="item.user.firstName"
+                 name="firstNames" placeholder="First Names" pattern="^[a-zA-Z\s]*$" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+      <div class="form-group container">
+        <label class="col-sm-6 control-label no-padding-right" for="form-field-3">Surname </label>
+        <div class="col-sm-6">
+          <input type="text" id="form-field-3" #lastName="ngModel" required [(ngModel)]="item.user.lastName"
+                 name="lastName" placeholder="Surname" pattern="^[a-zA-Z\s]*$" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+      <div class="form-group container">
+        <label class="col-sm-6 control-label no-padding-right" for="form-field-4">Contact Number </label>
+        <div class="col-sm-6">
+          <input type="text" id="form-field-4" #contactNumber="ngModel" required [(ngModel)]="item.user.contactNumber"
+                 name="contactNumber" placeholder="Contact Number" pattern="^[0-9]{10,10}$"
+                 class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+      <div class="form-group container">
+        <label class="col-sm-6 control-label no-padding-right" for="form-field-5">Id Number/Passport </label>
+        <div class="col-sm-6">
+          <input type="text" id="form-field-5" #idNumber="ngModel" required [(ngModel)]="item.user.idNumber"
+                 name="idNumber" placeholder="Id Number/Passport" class="col-xs-10 col-sm-5">
+        </div>
+      </div>
+
+
+      <div class="form-group container">
+        <label class="col-sm-9 control-label no-padding-right" for="form-field-5">Any other pre-existing medical
+          conditions</label>
+        <div class="col-sm-3">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="item.preExistingMedicalConditions = 'Yes'" class="btn"
+                    [ngClass]="item.preExistingMedicalConditions==='Yes' ? 'btn-primary':'btn-secondary'">Yes
+            </button>
+            <button type="button" (click)="item.preExistingMedicalConditions = 'No'" class="btn"
+                    [ngClass]="item.preExistingMedicalConditions==='No' ? 'btn-primary':'btn-secondary'">No
+            </button>
+            <button type="button" (click)="item.preExistingMedicalConditions = 'NotSure'" class="btn"
+                    [ngClass]="item.preExistingMedicalConditions==='NotSure' ? 'btn-primary':'btn-secondary'">Not Sure
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group container">
+        <label class="col-sm-9 control-label no-padding-right" for="form-field-5">Are you sweating or
+          shivering? </label>
+        <div class="col-sm-3">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="item.feelingHotOrCold = 'Yes'" class="btn"
+                    [ngClass]="item.feelingHotOrCold==='Yes' ? 'btn-primary':'btn-secondary'">Yes
+            </button>
+            <button type="button" (click)="item.feelingHotOrCold = 'No'" class="btn"
+                    [ngClass]="item.feelingHotOrCold==='No' ? 'btn-primary':'btn-secondary'">No
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group container">
+        <label class="col-sm-9 control-label no-padding-right" for="form-field-5">Do you have a cough that recently
+          started?</label>
+        <div class="col-sm-3">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="item.recentCough = 'Yes'" class="btn"
+                    [ngClass]="item.recentCough==='Yes' ? 'btn-primary':'btn-secondary'">Yes
+            </button>
+            <button type="button" (click)="item.recentCough = 'No'" class="btn"
+                    [ngClass]="item.recentCough==='No' ? 'btn-primary':'btn-secondary'">No
+            </button>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-group container">
+        <label class="col-sm-9 control-label no-padding-right" for="form-field-5">Do you have a sore throat or pain
+          when swallowing?</label>
+        <div class="col-sm-3">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="item.soreThroat = 'Yes'" class="btn"
+                    [ngClass]="item.soreThroat==='Yes' ? 'btn-primary':'btn-secondary'">Yes
+            </button>
+            <button type="button" (click)="item.soreThroat = 'No'" class="btn"
+                    [ngClass]="item.soreThroat==='No' ? 'btn-primary':'btn-secondary'">No
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group container">
+        <label class="col-sm-9 control-label no-padding-right" for="form-field-5">Do you have diarrhoea?</label>
+        <div class="col-sm-3">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="item.diarrhoea = 'Yes'" class="btn"
+                    [ngClass]="item.diarrhoea==='Yes' ? 'btn-primary':'btn-secondary'">Yes
+            </button>
+            <button type="button" (click)="item.diarrhoea = 'No'" class="btn"
+                    [ngClass]="item.diarrhoea==='No' ? 'btn-primary':'btn-secondary'">No
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group container">
+        <label class="col-sm-9 control-label no-padding-right" for="form-field-5">Do you have difficulty
+          breathing?</label>
+        <div class="col-sm-3">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="item.difficultyBreathing = 'Yes'" class="btn"
+                    [ngClass]="item.difficultyBreathing==='Yes' ? 'btn-primary':'btn-secondary'">Yes
+            </button>
+            <button type="button" (click)="item.difficultyBreathing = 'No'" class="btn"
+                    [ngClass]="item.difficultyBreathing==='No' ? 'btn-primary':'btn-secondary'">No
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group container">
+        <label class="col-sm-9 control-label no-padding-right" for="form-field-5">Have you noticed any recent changes
+          in your ability to taste or smell things?</label>
+        <div class="col-sm-3">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="item.lostTasteOrSmell = 'Yes'" class="btn"
+                    [ngClass]="item.lostTasteOrSmell==='Yes' ? 'btn-primary':'btn-secondary'">Yes
+            </button>
+            <button type="button" (click)="item.lostTasteOrSmell = 'No'" class="btn"
+                    [ngClass]="item.lostTasteOrSmell==='No' ? 'btn-primary':'btn-secondary'">No
+            </button>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-group container">
+        <label class="col-sm-9 control-label no-padding-right" for="form-field-5">Do you have general body
+          pains?</label>
+        <div class="col-sm-3">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="item.generalBodyPains = 'Yes'" class="btn"
+                    [ngClass]="item.generalBodyPains==='Yes' ? 'btn-primary':'btn-secondary'">Yes
+            </button>
+            <button type="button" (click)="item.generalBodyPains = 'No'" class="btn"
+                    [ngClass]="item.generalBodyPains==='No' ? 'btn-primary':'btn-secondary'">No
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group container">
+        <label class="col-sm-9 control-label no-padding-right" for="form-field-5">Have you been in close contact to
+          someone confirmed to be infected with COVID19?</label>
+        <div class="col-sm-3">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="item.contactedInfectedPerson = 'Yes'" class="btn"
+                    [ngClass]="item.contactedInfectedPerson==='Yes' ? 'btn-primary':'btn-secondary'">Yes
+            </button>
+            <button type="button" (click)="item.contactedInfectedPerson = 'No'" class="btn"
+                    [ngClass]="item.contactedInfectedPerson==='No' ? 'btn-primary':'btn-secondary'">No
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="clearfix form-actions col-md-12">
+        <div class="col-md-12 text-center">
+          <button class="btn btn-info" [disabled]="!itemForm.valid" type="submit">
+            <i class="ace-icon fa fa-check bigger-110"></i>
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
